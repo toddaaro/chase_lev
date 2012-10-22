@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <glib.h>
 
 #include "chase_lev.h"
 
@@ -47,6 +48,10 @@ void stealer(void *n) {
 }
 
 int main(int argc, char *argv[]) {
+
+  #ifdef G_ATOMIC_LOCK_FREE
+  printf("lock free!\n");
+  #endif
 
   // a "real" test of the Chase-Lev deque
 
