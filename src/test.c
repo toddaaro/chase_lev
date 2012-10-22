@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
   for(int i = 0; i < n; i++) {
     sums[i] = 0;
     steal_nums[i] = steals;
-    printf("initial sum setting: %ld\n", steal_nums[i]);
+    printf("initial sum setting: %ld\n", sums[i]);
   }
 
   for( unsigned long i = 0; i < n; i++) {
