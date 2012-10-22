@@ -109,9 +109,9 @@ void * pop_bottom(ws_deque *q) {
   // this is the case for exactly one element, this is now the top so act accordingly
 
   long int new_t = t+1;
-  gboolean cas = g_atomic_pointer_compare_and_exchange(&(q->top), 
-                                                       t, 
-                                                       new_t);
+  gboolean cas = g_atomic_pointer_compare_and_exchange((void * volatile*)&(q->top), 
+                                                       (void*)t, 
+                                                       (void*)new_t);
 
   if( !cas ) {
     value = NULL;
@@ -137,9 +137,9 @@ void * steal(ws_deque *q) {
   void *value = ca_get(a, t);
 
   long int new_t = t + 1; // top stuff
-  gboolean cas = g_atomic_pointer_compare_and_exchange(&(q->top), 
-                                                       t, 
-                                                       new_t);
+  gboolean cas = g_atomic_pointer_compare_and_exchange((void * volatile*)&(q->top), 
+                                                       (void*)t, 
+                                                       (void*)new_t);
 
   if( !cas ) {
     return NULL;

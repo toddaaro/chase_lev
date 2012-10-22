@@ -93,8 +93,6 @@ int main(int argc, char *argv[]) {
 
   printf("expected %ld got %ld\n", expected, final_sum);
 
-  printf("queue size: %ld\n", (q->bottom - q->top));
-
 }
 
   /*
