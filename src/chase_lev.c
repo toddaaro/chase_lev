@@ -130,7 +130,7 @@ void * steal(ws_deque *q) {
 
   long int t = (long int) g_atomic_pointer_get(&(q->top));
   long int b = q->bottom;
-  circular_array *a = q->active_array;
+  circular_array * volatile a = q->active_array;
   long int size = b - t;
 
   if( size <= 0 ) {
