@@ -24,7 +24,7 @@ long int ca_size(circular_array *a);
 typedef struct {
   volatile long int bottom;
   void * volatile* top;
-  circular_array *active_array;
+  circular_array *volatile active_array;
 } ws_deque;
 
 ws_deque * ws_queue_build();
