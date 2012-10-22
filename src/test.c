@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
   sums = rsums;
   steal_nums = rsteal_nums;
 
-  unsigned long pushes = 1000000;
+  unsigned long pushes = atoi(argv[2]);
   unsigned long steals = pushes / n;
 
   for(int i = 0; i < n; i++) {
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
   unsigned long final_sum = 0;
   for( int i = 0; i < n; i++ ) {
-    //printf("prev sum: %d, i: %d, to add: %d\n", final_sum, i, sums[i]);
+    printf("prev sum: %ld, i: %d, to add: %ld\n", final_sum, i, sums[i]);
     final_sum = final_sum + sums[i];
   }
 
