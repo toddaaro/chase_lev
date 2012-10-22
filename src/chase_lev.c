@@ -33,7 +33,7 @@ void * ca_get(circular_array *a, long int i) {
 
 void ca_put(circular_array *a, long int i, void *o) {
 
-  void *segment = a->segment;
+  volatile void *segment = a->segment;
   ((void**)segment)[i % ca_size(a)] = o;
 
 }

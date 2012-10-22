@@ -8,7 +8,7 @@
 
 typedef struct {
   unsigned long int log_size;
-  void ** volatile segment;
+  void * volatile * volatile segment;
 } circular_array;
 
 circular_array * ca_build(unsigned long int log_size);
@@ -24,7 +24,7 @@ long int ca_size(circular_array *a);
 typedef struct {
   volatile long int bottom;
   void * volatile* top;
-  circular_array *volatile active_array;
+  circular_array * volatile active_array;
 } ws_deque;
 
 ws_deque * ws_queue_build();
