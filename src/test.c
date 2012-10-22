@@ -9,8 +9,8 @@
 
 ws_deque *q;
 
-unsigned long int *sums;
-unsigned long int *steal_nums;
+volatile unsigned long int *sums;
+volatile unsigned long int *steal_nums;
 
 // takes in a number of pushes to make
 void pusher(void *n) {
