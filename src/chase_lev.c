@@ -14,6 +14,9 @@ circular_array * ca_build(unsigned long int log_size) {
   ca->log_size = log_size;
   long int real_size = 1 << log_size;
   ca->segment = (void*) malloc(real_size * sizeof(void *));
+  for(long int i = 0; i< real_size; i++) {
+    ca->segment[i] = (void*) 1000000000000;
+  }
 
   return ca;
 
