@@ -8,7 +8,7 @@
 
 typedef struct {
   unsigned long int log_size;
-  void **segment;
+  void ** volatile segment;
 } circular_array;
 
 circular_array * ca_build(unsigned long int log_size);
