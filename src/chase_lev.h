@@ -33,6 +33,8 @@ void push_bottom(ws_deque *q, void *value);
 
 void * pop_bottom(ws_deque *q);
 
+int is_empty(ws_deque *q);
+
 void * steal(ws_deque *q);
 
 #endif

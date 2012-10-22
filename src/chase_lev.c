@@ -126,6 +126,17 @@ void * pop_bottom(ws_deque *q) {
 
 }
 
+// THIS FUNCTION IS NOT SAFE
+// IT CAN ONLY BE CALLED BY OWNER AND
+// IT CAN BE INCORRECT
+int is_empty(ws_deque *q) {
+
+  long int t = (long int) g_atomic_pointer_get(&(q->top));
+  long int b = q->bottom;
+  return ((b - t) == 0);
+
+}
+
 void * steal(ws_deque *q) {
 
   long int t = (long int) g_atomic_pointer_get(&(q->top));
