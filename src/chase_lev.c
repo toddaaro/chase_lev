@@ -21,7 +21,7 @@ circular_array * ca_build(unsigned long int log_size) {
 
 void * ca_get(circular_array *a, long int i) {
 
-  void *segment = a->segment;
+  volatile void *segment = a->segment;
   long int index = i % ca_size(a);
   void *res = ((void**)segment)[index];
   return res;
