@@ -2,7 +2,7 @@
 
 OFILES = chase_lev.o
 glib = `pkg-config --cflags --libs glib-2.0`
-CFLAGS = -pthread $(glib) -Wall -std=c99 -O2
+CFLAGS = -pthread $(glib) -Wall -std=c99 -O1
 
 test: $(OFILES) test.c
 	gcc $(CFLAGS) -o $@ $(OFILES) test.c
