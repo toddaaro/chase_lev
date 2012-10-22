@@ -4,32 +4,30 @@
 #include <stdbool.h>
 #include <glib.h>
 
-#define LOG_INITIAL_SIZE 8
+#define LOG_INITIAL_SIZE 2
 
 typedef struct {
-  int log_size;
+  unsigned long int log_size;
   void **segment;
 } circular_array;
 
-circular_array * ca_build(int log_size);
+circular_array * ca_build(unsigned long int log_size);
 
-void * ca_get(circular_array *a, int i);
+void * ca_get(circular_array *a, long int i);
 
-void ca_put(circular_array *a, int i, void *o);
+void ca_put(circular_array *a, long int i, void *o);
 
-circular_array * ca_grow(circular_array *a, int b, int t);
+circular_array * ca_grow(circular_array *a, long int b, long int t);
 
-int ca_size(circular_array *a);
+long int ca_size(circular_array *a);
 
 typedef struct {
-  int bottom;
-  int top;
+  long int bottom;
+  long int top;
   circular_array *active_array;
 } ws_deque;
 
 ws_deque * ws_queue_build();
-
-bool cas_top(gint *memloc, int new_val);
 
 void push_bottom(ws_deque *q, void *value);
 

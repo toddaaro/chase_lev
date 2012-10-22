@@ -9,15 +9,15 @@
 
 ws_deque *q;
 
-unsigned long *sums;
-unsigned long *steal_nums;
+unsigned long int *sums;
+unsigned long int *steal_nums;
 
 // takes in a number of pushes to make
 void pusher(void *n) {
 
-  unsigned long pushes = (unsigned long) n;
+  unsigned long int pushes = (unsigned long int) n;
 
-  for(unsigned long i = 0; i < pushes; i++) {
+  for(unsigned long int i = 0; i < pushes; i++) {
     push_bottom(q, (void *)(i+1));
   }
 
@@ -28,13 +28,13 @@ void pusher(void *n) {
 // takes in a thread id
 void stealer(void *n) {
 
-  unsigned long tid = (unsigned long) n;
-  unsigned long value;  
+  unsigned long int tid = (unsigned long int) n;
+  unsigned long int value;  
 
-  unsigned long steal_num = steal_nums[tid];
+  unsigned long int steal_num = steal_nums[tid];
 
-  for(unsigned long i = 0; i < steal_num; i++) {
-    value = (unsigned long) steal(q);
+  for(unsigned long int i = 0; i < steal_num; i++) {
+    value = (unsigned long int) steal(q);
     if(value == 0) {
       i--; // zero means we failed to steal something
     } else {
@@ -57,14 +57,14 @@ int main(int argc, char *argv[]) {
   pthread_t pushert;
   pthread_t stealert[n];
 
-  unsigned long rsums[n];
-  unsigned long rsteal_nums[n];
+  unsigned long int rsums[n];
+  unsigned long int rsteal_nums[n];
 
   sums = rsums;
   steal_nums = rsteal_nums;
 
-  unsigned long pushes = atoi(argv[2]);
-  unsigned long steals = pushes / n;
+  unsigned long int pushes = atoi(argv[2]);
+  unsigned long int steals = pushes / n;
 
   for(int i = 0; i < n; i++) {
     sums[i] = 0;
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     printf("initial sum setting: %ld\n", sums[i]);
   }
 
-  for( unsigned long i = 0; i < n; i++) {
+  for( unsigned long int i = 0; i < n; i++) {
     pthread_create(&stealert[i], NULL, stealer, (void *) i);
   }
 
@@ -84,17 +84,17 @@ int main(int argc, char *argv[]) {
     pthread_join(stealert[i], NULL);
   }
 
-  unsigned long final_sum = 0;
+  unsigned long int final_sum = 0;
   for( int i = 0; i < n; i++ ) {
     printf("prev sum: %ld, i: %d, to add: %ld\n", final_sum, i, sums[i]);
     final_sum = final_sum + sums[i];
   }
 
-  unsigned long expected = (pushes * (pushes + 1)) / 2;
+  unsigned long int expected = (pushes * (pushes + 1)) / 2;
 
   printf("expected %ld got %ld\n", expected, final_sum);
 
-  printf("queue size: %d\n", (q->bottom - q->top));
+  printf("queue size: %ld\n", (q->bottom - q->top));
 
 }
 
