@@ -24,9 +24,9 @@ circular_array * ca_build(unsigned long int log_size) {
 
 void * ca_get(circular_array *a, long int i) {
 
-  volatile void * volatile * volatile segment = a->segment;
+  void ** segment = a->segment;
   long int index = i % ca_size(a);
-  void *res = ((void** volatile)segment)[index];
+  void *res = ((void**)segment)[index];
   return res;
 
 }
@@ -130,7 +130,7 @@ void * steal(ws_deque *q) {
 
   long int t = (long int) g_atomic_pointer_get(&(q->top));
   long int b = q->bottom;
-  circular_array * volatile a = q->active_array;
+  circular_array * a = q->active_array;
   long int size = b - t;
 
   if( size <= 0 ) {
