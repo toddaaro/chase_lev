@@ -9,9 +9,15 @@
 
 ws_deque *q;
 
+unsigned long *sums;
+unsigned long *steal_nums;
+
+// takes in a number of pushes to make
 void pusher(void *n) {
 
-  for(int i = 0; i < n; i++) {
+  unsigned long pushes = (unsigned long) n;
+
+  for(unsigned long i = 0; i < pushes; i++) {
     push_bottom(q, (void *)(i+1));
   }
 
@@ -19,59 +25,73 @@ void pusher(void *n) {
 
 }
 
+// takes in a thread id
 void stealer(void *n) {
 
-  long sum = 0;
-  int value;  
+  unsigned long tid = (unsigned long) n;
+  unsigned long value;  
 
-  for(int i = 0; i <n; i++) {
-    value = (int)steal(q);
+  unsigned long steal_num = steal_nums[tid];
+
+  for(unsigned long i = 0; i < steal_num; i++) {
+    value = (unsigned long) steal(q);
     if(value == 0) {
-      i--;
+      i--; // zero means we failed to steal something
     } else {
-      sum = sum + value;
+      sums[tid] = sums[tid] + value;
     }
   }
   
-  pthread_exit(sum);
+  pthread_exit(NULL);
 
 }
 
 int main(int argc, char *argv[]) {
 
-  // a real test of the Chase-Lev deque
+  // a "real" test of the Chase-Lev deque
 
   int n = atoi(argv[1]);
 
   q = ws_queue_build();
 
   pthread_t pushert;
-
   pthread_t stealert[n];
-  int sums[n];
 
-  long arg = 16384*120;
-  long per_s = arg/n;
+  unsigned long rsums[n];
+  unsigned long rsteal_nums[n];
 
-  for( int i = 0; i < n; i++) {
-    pthread_create(&stealert[i], NULL, stealer, (void *)per_s);
+  sums = rsums;
+  steal_nums = rsteal_nums;
+
+  unsigned long pushes = 1000000;
+  unsigned long steals = pushes / n;
+
+  for(int i = 0; i < n; i++) {
+    sums[i] = 0;
+    steal_nums[i] = steals;
   }
 
-  pthread_create(&pushert, NULL, pusher, (void *)arg);
+  for( unsigned long i = 0; i < n; i++) {
+    pthread_create(&stealert[i], NULL, stealer, (void *) i);
+  }
+
+  pthread_create(&pushert, NULL, pusher, (void *) pushes);
 
   pthread_join(pushert, NULL);
 
   for( int i = 0; i<n; i++ ) {
-    pthread_join(stealert[i], &sums[i]);
+    pthread_join(stealert[i], NULL);
   }
 
-  int final_sum = 0;
+  unsigned long final_sum = 0;
   for( int i = 0; i < n; i++ ) {
     //printf("prev sum: %d, i: %d, to add: %d\n", final_sum, i, sums[i]);
     final_sum = final_sum + sums[i];
   }
 
-  printf("expected %d got %d\n", ((arg * (arg +1))/2), final_sum);
+  unsigned long expected = (pushes * (pushes + 1)) / 2;
+
+  printf("expected %ld got %ld\n", expected, final_sum);
 
   printf("queue size: %d\n", (q->bottom - q->top));
 
