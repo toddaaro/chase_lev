@@ -68,7 +68,7 @@ ws_deque * ws_queue_build() {
 void push_bottom(ws_deque *q, void *value) {
 
   long int b = q->bottom;
-  long int t = g_atomic_pointer_get(&(q->top));
+  long int t = (long int) g_atomic_pointer_get(&(q->top));
   circular_array *a = q->active_array;
   long int a_size = ca_size(a);
   long int size = b - t;
@@ -91,7 +91,7 @@ void * pop_bottom(ws_deque *q) {
   b = b - 1;
   q->bottom = b;
 
-  long int t = g_atomic_pointer_get(&(q->top));
+  long int t = (long int) g_atomic_pointer_get(&(q->top));
   long int size = b - t;
   long int zero = 0;
 
@@ -125,7 +125,7 @@ void * pop_bottom(ws_deque *q) {
 
 void * steal(ws_deque *q) {
 
-  long int t = g_atomic_pointer_get(&(q->top));
+  long int t = (long int) g_atomic_pointer_get(&(q->top));
   long int b = q->bottom;
   circular_array *a = q->active_array;
   long int size = b - t;

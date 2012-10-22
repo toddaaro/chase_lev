@@ -69,14 +69,13 @@ int main(int argc, char *argv[]) {
   for(int i = 0; i < n; i++) {
     sums[i] = 0;
     steal_nums[i] = steals;
-    printf("initial sum setting: %ld\n", sums[i]);
   }
 
   for( unsigned long int i = 0; i < n; i++) {
-    pthread_create(&stealert[i], NULL, stealer, (void *) i);
+    pthread_create(&stealert[i], NULL, (void * (*)(void *)) stealer, (void *) i);
   }
 
-  pthread_create(&pushert, NULL, pusher, (void *) pushes);
+  pthread_create(&pushert, NULL, (void * (*)(void *)) pusher, (void *) pushes);
 
   pthread_join(pushert, NULL);
 
