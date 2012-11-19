@@ -1,4 +1,0 @@
-
-This is a basic implementation of the Chase-Lev workstealing deque in
-C. This is a lock-free data structure.
-
